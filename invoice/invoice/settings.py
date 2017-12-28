@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # From invoice project
     'invoice',
     'base_classes',
+    'faktura',
     #3rd party APP_DIRS
     'django_countries',
 ]
