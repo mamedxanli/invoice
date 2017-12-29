@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'invoice',
     'base_classes',
     'faktura',
+    'fakturaitem',
     #3rd party APP_DIRS
     'django_countries',
 ]

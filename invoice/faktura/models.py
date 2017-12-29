@@ -2,21 +2,8 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from base_classes.models import BaseMetaData
-from faktura.models import Faktura
 
-class FakturaItem(BaseMetaData):
-    """ FakturaItem model """
-
-    description = models.CharField(help_text=_('Item Description'), blank=True),
-    quantity = models.IntegerField(help_text=_('Quantity'), default=1),
-    unit = models.CharField(help_text=_('Kg, Litres, Hours'), blank=True),
-    rate = models.IntegerField(help_text=_('Rate or Price per unit'), default=1),
-    # amount = models.IntegerField(quantity * rate),
-
-    #Foreign Keys
-    faktura_id = models.ForeignKey(Faktura),
-
-class Faktura (BaseMetadata):
+class Faktura (BaseMetaData):
     """ invoice / faktura model"""
 
     # TO-DO user_id (FK)
@@ -27,7 +14,7 @@ class Faktura (BaseMetadata):
     # TO-DO registered_address (main) ← address of user’s company
     # TO-DO billing_account (main) ← account of user’s company
     # TO-DO recipient (FK to Customer)
-    due_date = models.DateTimeField(help_text=_('Last day for pay'))
+    due_date = models.DateField(help_text=_('Last day for pay'))
     # TO-DO footer (from company invoice_footer)
 
     # Fields for the Recurring feature
@@ -55,7 +42,7 @@ class Faktura (BaseMetadata):
         (4, _('Questioned')),
         (5, _('Draft')),
     )
-    status = models.IntegerField(help_text=_('Status of the invoice')choices=STATUSES, default=0)
+    status = models.IntegerField(help_text=_('Status of the invoice'),choices=STATUSES, default=0)
 
     # Functions for calculate the totals
     # TO-DO amount_pre_tax to be calculated based upon invoiceitem/s)
