@@ -1,15 +1,17 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from base_classes.models import BaseMetaData
+from faktura.models import Faktura
 
 class FakturaItem(BaseMetaData):
     """ FakturaItem model """
 
-    description = models.CharField(_('Item Description'), blank=True),
-    quantity = models.IntegerField(_('Quantity')),
-    unit = models.CharField(_('Kg, Litres, Hours'), blank=True),
-    rate = models.IntegerField(_('Rate or Price per unit')),
-    amount = quantity * rate,
+    description = models.CharField(help_text=_('Item Description'), blank=True),
+    quantity = models.IntegerField(help_text=_('Quantity'), default=1),
+    unit = models.CharField(help_text=_('Kg, Litres, Hours'), blank=True),
+    rate = models.IntegerField(help_text=_('Rate or Price per unit'), default=1),
+    # amount = models.IntegerField(quantity * rate),
 
     #Foreign Keys
     faktura_id = models.ForeignKey(Faktura),
@@ -17,23 +19,23 @@ class FakturaItem(BaseMetaData):
 class Faktura (BaseMetadata):
     """ invoice / faktura model"""
 
-    # user_id (FK)
+    # TO-DO user_id (FK)
     invoice_number = models.IntegerField(primary_key=True),    # TO-DO (counter) company_id + invoice_number → unique
-    description = models.CharField(_('Item Description'), blank=True),
-    # language (for backend, maybe should be a setting company or user wide)
-    currency = unit = models.CharField(_('Currency')),
-    # registered_address (main) ← address of user’s company
-    # billing_account (main) ← account of user’s company
-    # recipient (FK to Customer)
-    due_date = models.DateTimeField(_('Last day for pay'))
-    # footer (from company invoice_footer)
+    description = models.CharField(help_text=_('Item Description'), blank=True),
+    # TO-DO ? language (for backend, maybe should be a setting company or user wide)
+    currency = unit = models.CharField(help_text=_('Currency')),
+    # TO-DO registered_address (main) ← address of user’s company
+    # TO-DO billing_account (main) ← account of user’s company
+    # TO-DO recipient (FK to Customer)
+    due_date = models.DateTimeField(help_text=_('Last day for pay'))
+    # TO-DO footer (from company invoice_footer)
 
     # Fields for the Recurring feature
-    recurring = models.BooleanField(_('Turn on to send a copy of the invoice again'),
+    recurring = models.BooleanField(help_text=_('Turn on to send a copy of the invoice again'),
                                     default=False)
-    recurring_issue_start_date = models.DateField(_('Date to start sending the invoice')),
-    recurring_day = models.DateField(_('Date for the next automatic invoice to be sent')),
-    recurring_next_issue_date → to be calculated by a celery job every n hours.
+    recurring_issue_start_date = models.DateField(help_text=_('Date to start sending the invoice')),
+    recurring_day = models.DateField(help_text=_('Date for the next automatic invoice to be sent')),
+    # TO-DO recurring_next_issue_date → to be calculated by a celery job every n hours.
 
     INTERVAL = (
         (0, _('Daily')),
@@ -53,8 +55,8 @@ class Faktura (BaseMetadata):
         (4, _('Questioned')),
         (5, _('Draft')),
     )
-    status = models.IntegerField(choices=STATUSES, default=0)
+    status = models.IntegerField(help_text=_('Status of the invoice')choices=STATUSES, default=0)
 
     # Functions for calculate the totals
-    amount_pre_tax to be calculated based upon invoiceitem/s)
-    amount_final (to be calculated based upon invoiceitem/s)
+    # TO-DO amount_pre_tax to be calculated based upon invoiceitem/s)
+    # TO-DO amount_final (to be calculated based upon invoiceitem/s)
