@@ -40,7 +40,6 @@ class Faktura (BaseMetaData):
         (2, _('Paid')),
         (3, _('Cancelled')),
         (4, _('Questioned')),
-        (5, _('Draft')),
     )
     status = models.IntegerField(help_text=_('Status of the invoice'),choices=STATUSES, default=0)
 
