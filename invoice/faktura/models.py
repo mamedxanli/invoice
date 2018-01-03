@@ -47,4 +47,7 @@ class Faktura(BaseMetaData):
     # Functions for calculate the totals
     # TO-DO amount_pre_tax to be calculated based upon invoiceitem/s), tax could be a field in company or here.
     # TO-DO amount_final (to be calculated based upon invoiceitem/s)
-    
+
+    @property
+    def amount_total(self):
+        return self.quantity * self.rate
