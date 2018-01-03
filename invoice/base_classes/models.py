@@ -17,14 +17,13 @@ class BaseMetaData(models.Model):
 class BaseAddress(BaseMetaData):
     """ Address model """
 
-    country = CountryField(blank_label=_('(Select Country)')),
-    county = models.CharField(_('county'), max_length=50, blank=True),
-    city = models.CharField(_('city'), max_length=90),
-    address_line1 = models.CharField(_('address line 1'), max_length=90),
-    address_line2 = models.CharField(_('address line 2'), max_length=90,
-                                     blank=True),
+    country = CountryField(blank_label=_('(Select Country)'))
+    county = models.CharField(_('county'), max_length=50, blank=True)
+    city = models.CharField(_('city'), max_length=90)
+    address_line1 = models.CharField(_('address line 1'), max_length=90)
+    address_line2 = models.CharField(_('address line 2'), max_length=90, blank=True)
     name = models.CharField(_('name'), max_length=90)
-    phone = models.IntegerField(_('phone'), blank=True),
+    phone = models.IntegerField(_('phone'), blank=True)
     email = models.EmailField(_('email'), max_length=90, blank=True)
 
     def get_full_address(self):

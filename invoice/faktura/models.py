@@ -3,25 +3,25 @@ from django.utils.translation import ugettext_lazy as _
 
 from base_classes.models import BaseMetaData
 
-class Faktura (BaseMetaData):
+
+class Faktura(BaseMetaData):
     """ invoice / faktura model"""
 
     # TO-DO user_id (FK)
-    invoice_number = models.IntegerField(primary_key=True),    # TO-DO (counter) company_id + invoice_number → unique
-    description = models.CharField(help_text=_('Item Description'), blank=True),
+    invoice_number = models.IntegerField(primary_key=True)  # TO-DO (counter) company_id + invoice_number → unique
+    description = models.CharField(help_text=_('Item Description'), max_length=512, blank=True)
     # TO-DO ? language (for backend, maybe should be a setting company or user wide)
-    currency = unit = models.CharField(help_text=_('Currency')),
+    currency = models.CharField(help_text=_('$, £, etc'), max_length=16)
     # TO-DO registered_address (main) ← address of user’s company
     # TO-DO billing_account (main) ← account of user’s company
     # TO-DO recipient (FK to Customer)
-    due_date = models.DateField(help_text=_('Last day for pay'))
+    due_date = models.DateField(help_text=_('Last day to pay'))
     # TO-DO footer (from company invoice_footer)
 
     # Fields for the Recurring feature
-    recurring = models.BooleanField(help_text=_('Turn on to send a copy of the invoice again'),
-                                    default=False)
-    recurring_issue_start_date = models.DateField(help_text=_('Date to start sending the invoice')),
-    recurring_day = models.DateField(help_text=_('Date for the next automatic invoice to be sent')),
+    recurring = models.BooleanField(help_text=_('Turn on to send a copy of the invoice again'), default=False)
+    recurring_issue_start_date = models.DateField(help_text=_('Date to start sending the invoice'), blank=True)
+    recurring_day = models.DateField(help_text=_('Date for the next automatic invoice to be sent'), blank=True)
     # TO-DO recurring_next_issue_date → to be calculated by a celery job every n hours.
 
     INTERVAL = (
@@ -31,7 +31,7 @@ class Faktura (BaseMetaData):
         (3, _('Monthly')),
         (4, _('Yearly')),
     )
-    recurring_interval = models.IntegerField(choices=INTERVAL, default=3)
+    recurring_interval = models.IntegerField(choices=INTERVAL, default=3, blank=True)
 
     # Faktura STATUSES
     STATUSES = (
@@ -41,7 +41,7 @@ class Faktura (BaseMetaData):
         (3, _('Cancelled')),
         (4, _('Questioned')),
     )
-    status = models.IntegerField(help_text=_('Status of the invoice'),choices=STATUSES, default=0)
+    status = models.IntegerField(help_text=_('Status of the invoice'), choices=STATUSES, default=0)
 
     # Functions for calculate the totals
     # TO-DO amount_pre_tax to be calculated based upon invoiceitem/s)
