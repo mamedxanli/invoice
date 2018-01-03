@@ -12,7 +12,10 @@ class FakturaItem(BaseMetaData):
     quantity = models.IntegerField(help_text=_('Quantity'), default=1)
     unit = models.CharField(help_text=_('Kg, Litres, Hours'), max_length=128 ,blank=True)
     rate = models.IntegerField(help_text=_('Rate or Price per unit'), default=1)
-    # amount = models.IntegerField(quantity * rate),
 
     # Foreign Keys
     faktura_id = models.ForeignKey(Faktura, on_delete=models.CASCADE)
+
+    @property
+    def ammount(self):
+        return self.quantity * self.rate
