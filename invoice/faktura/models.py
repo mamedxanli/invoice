@@ -18,7 +18,7 @@ class Faktura(BaseMetaData):
         (3, _('Cancelled')),
         (4, _('Questioned')),
     )
-    status = models.IntegerField(help_text=_('Status of the invoice'), choices=STATUSES, default=0
+    status = models.IntegerField(help_text=_('Status of the invoice'), choices=STATUSES, default=0)
 
     description = models.CharField(help_text=_('Item Description'), max_length=512, blank=True)
     # TO-DO ? language (for backend, maybe should be a setting company or user wide)
@@ -51,3 +51,7 @@ class Faktura(BaseMetaData):
     @property
     def amount_total(self):
         return self.quantity * self.rate
+
+    def __str__(self):
+        """Returns the invoice number if called alone"""
+        return "%s" % (self.invoice_number)
