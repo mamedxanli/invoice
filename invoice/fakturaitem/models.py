@@ -17,5 +17,5 @@ class FakturaItem(BaseMetaData):
     faktura_id = models.ForeignKey(Faktura, on_delete=models.CASCADE)
 
     @property
-    def amount(self):
+    def item_amount(self):
         return self.quantity * self.rate

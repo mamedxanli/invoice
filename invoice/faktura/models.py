@@ -1,11 +1,15 @@
 from django.db import models
+from django.db.models import Sum
 from django.utils.translation import ugettext_lazy as _
 
 from base_classes.models import BaseMetaData
+#from fakturaitem.models import FakturaItem
 
 
 class Faktura(BaseMetaData):
     """ invoice / faktura model"""
+    class Meta:
+        ordering = ["created_at"]
 
     # TO-DO user_id (FK)
     invoice_number = models.IntegerField(primary_key=True)  # TO-DO (counter) company_id + invoice_number → unique
@@ -50,7 +54,13 @@ class Faktura(BaseMetaData):
 
     @property
     def amount_total(self):
-        return self.quantity * self.rate
+        """Returns the total for the faktura"""
+        total = models.IntegerField()
+        for item in self.fakturaitems.all():
+            total += item.item_amount
+        #total = Faktura.objects.filter(faktura_id=self).aggregate(total=Sum(amount))
+        #total = Faktura.objects.annotate(progress=Sum('item_amount'))
+        return total
 
     def __str__(self):
         """Returns the invoice number if called alone"""
